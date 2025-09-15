@@ -1,8 +1,8 @@
 "use client"
 import { useSession } from 'next-auth/react'
 import React from 'react'
-import { SignInButton } from '@/app/actions/signInButton'
-import { SignOutButton } from '@/app/actions/signOutButton'
+import { SignInButton } from '@/actions/signInButton'
+import { SignOutButton } from '@/actions/signOutButton'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     Popover,
@@ -15,7 +15,7 @@ export default function AuthHeader() {
   let session = useSession();
 
   if(session.status == "loading") return null;
-  
+
   let authNode: React.ReactNode;
 
   if (session.data?.user) {
