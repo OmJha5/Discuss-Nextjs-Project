@@ -96,9 +96,7 @@ User clicks Sign In on your website (browser).
 
 Browser calls signIn("github").
 
-NextAuth redirects the browser to GitHub login page (GET /login/oauth/...).
-
-At this point, the browser is interacting directly with GitHub — your server hasn’t done the “final login” yet.
+NextAuth redirects the browser to GitHub login page (GET /login/oauth/...). still server gets the request
 
 2️⃣ GitHub redirects back (callback URL)
 
@@ -140,4 +138,39 @@ Browser follows the redirect → lands on /.
 The cookie (set by the server during the callback request) is now stored in the browser.
 
 Any future requests to your app will include the session cookie automatically.
+*/
+
+
+/*
+So when Next.js sees a request then (route.ts) is vulnerable to endpoints and it runs function based on the endpoint methods:
+
+It checks the method (GET/POST).
+
+Calls your exported function.
+
+NextAuth looks at the path (signin, callback, etc.) and runs the right logic.
+*/
+
+// [...nextauth] --> Any request to /api/auth/*
+
+/*
+In route.ts, the function names must match HTTP methods.
+So if you export:
+
+export async function GET(req: Request) { ... }
+export async function POST(req: Request) { ... }
+export async function PUT(req: Request) { ... }
+export async function DELETE(req: Request) { ... }
+
+
+Then:
+
+A GET /api/foo → Next.js runs your GET() function.
+
+A POST /api/foo → Next.js runs your POST() function.
+
+etc.
+
+If the request comes in with a method that you didn’t export (say PATCH) → Next.js will return 405 Method Not Allowed.
+
 */
